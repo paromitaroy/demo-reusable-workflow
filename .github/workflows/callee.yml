@@ -1,0 +1,39 @@
+name: Callee Workflow
+
+on:
+  workflow_call:
+    inputs:
+      app_name:
+        description: 'Name of application for deployment'
+        required: true
+        type: string
+      env_deploy:
+        description: 'Define which environment to run'
+        required: true
+        type: string
+        
+env:
+  APP_NAME: ${{ inputs.app_name }}-${{ inputs.env_deploy }}
+
+jobs:
+  deployTest:
+    name: Deploy Test
+    runs-on: ubuntu-latest
+    if: ${{ inputs.env_deploy == 'test' }}
+    environment: ${{ inputs.env_deploy }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Deployment
+        run: echo "In this step we deploy ${{ env.APP_NAME }} into test"
+      
+  deployProd:
+    name: Deploy Prod
+    runs-on: ubuntu-latest
+    if: ${{ inputs.env_deploy == 'prod' }}
+    environment: ${{ inputs.env_deploy }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Deployment
+        run: echo "In this step we deploy ${{ env.APP_NAME }} into prod"
