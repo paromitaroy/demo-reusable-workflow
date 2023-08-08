@@ -1,5 +1,7 @@
 #test 1
-on: [push]
+on:  
+  workflow_dispatch:
+  push: 
 
 jobs:
   hello_world_job:
